@@ -18,8 +18,9 @@ RUN apt-get update -qq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN cd /tmp \
-    && wget -q ${RAINLOOP_PGP_PUBLIC_KEY} \
+WORKDIR /tmp
+
+RUN wget -q ${RAINLOOP_PGP_PUBLIC_KEY} \
     && wget -q ${RAINLOOP_URL_ASC} \
     && wget -q ${RAINLOOP_URL} \
     && gpg --import RainLoop.asc \
