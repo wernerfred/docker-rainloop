@@ -1,8 +1,10 @@
 FROM php:7.4.12-apache
 
+ARG RAINLOOP_VERSION=1.14.0
+
 ARG DEBIAN_FRONTEND=noninteractive
-ARG RAINLOOP_URL=https://github.com/RainLoop/rainloop-webmail/releases/download/v1.14.0/rainloop-community-1.14.0.zip
-ARG RAINLOOP_URL_ASC=https://github.com/RainLoop/rainloop-webmail/releases/download/v1.14.0/rainloop-community-1.14.0.zip.asc
+ARG RAINLOOP_URL=https://github.com/RainLoop/rainloop-webmail/releases/download/v1.14.0/rainloop-community-${RAINLOOP_VERSION}.zip
+ARG RAINLOOP_URL_ASC=https://github.com/RainLoop/rainloop-webmail/releases/download/v1.14.0/rainloop-community-${RAINLOOP_VERSION}.zip.asc
 ARG RAINLOOP_PGP_PUBLIC_KEY=https://www.rainloop.net/repository/RainLoop.asc 
 ARG RAINLOOP_GPG_FINGERPRINT="3B79 7ECE 694F 3B7B 70F3  11A4 ED7C 49D9 87DA 4591"
 
@@ -21,15 +23,17 @@ RUN cd /tmp \
     && wget -q ${RAINLOOP_URL_ASC} \
     && wget -q ${RAINLOOP_URL} \
     && gpg --import RainLoop.asc \
-    && FINGERPRINT="$(LANG=C gpg --verify rainloop-community-1.14.0.zip.asc rainloop-community-1.14.0.zip 2>&1 \
+    && FINGERPRINT="$(LANG=C gpg --verify rainloop-community-${RAINLOOP_VERSION}.zip.asc rainloop-community-${RAINLOOP_VERSION}.zip 2>&1 \
       | sed -n "s#Primary key fingerprint: \(.*\)#\1#p")" \
     && if [ -z "${FINGERPRINT}" ]; then echo "ERROR: Invalid GPG signature!" && exit 1; fi \
     && if [ "${FINGERPRINT}" != "${RAINLOOP_GPG_FINGERPRINT}" ]; then echo "ERROR: Wrong GPG fingerprint!" && exit 1; fi
 
 RUN mkdir ${APACHE_DOCUMENT_ROOT} \
-    && unzip -q /tmp/rainloop-community-1.14.0.zip -d ${APACHE_DOCUMENT_ROOT} \
+    && unzip -q /tmp/rainloop-community-${RAINLOOP_VERSION}.zip -d ${APACHE_DOCUMENT_ROOT} \
     && find /rainloop -type d -exec chmod 755 {} \; \
     && find /rainloop -type f -exec chmod 644 {} \; \
     && chown -R www-data:www-data /rainloop
 
 EXPOSE 80
+
+VOLUME ["/rainloop/data"]
