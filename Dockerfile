@@ -13,9 +13,9 @@ ENV APACHE_DOCUMENT_ROOT /rainloop
 RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-available/*.conf
 RUN sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-RUN apt update -qq \
-    && apt install -q -y unzip wget gpg \
-    && apt clean \
+RUN apt-get update -qq \
+    && apt-get install -q -y unzip wget gpg \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 RUN cd /tmp \
@@ -30,7 +30,7 @@ RUN cd /tmp \
 
 RUN mkdir ${APACHE_DOCUMENT_ROOT} \
     && unzip -q /tmp/rainloop-community-1.14.0.zip -d ${APACHE_DOCUMENT_ROOT} \
-    && apt purge -q -y unzip wget gpg \
+    && apt-get purge -q -y unzip wget gpg \
     && rm -rf /tmp/*
 
 COPY entrypoint.sh /entrypoint.sh
