@@ -39,4 +39,6 @@ EXPOSE 80
 
 VOLUME ["/rainloop/data"]
 
+WORKDIR /rainloop/data
+
 ENTRYPOINT ["/entrypoint.sh"]
