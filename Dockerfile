@@ -14,7 +14,7 @@ RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-av
 RUN sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 RUN apt-get update -qq \
-    && apt-get install -q -y unzip wget gpg \
+    && apt-get install -q -y --no-install-recommends unzip wget gpg \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
