@@ -1,0 +1,4 @@
+# Ignore everything exept the actual files needed
+**
+!Dockerfile
+!entrypoint.sh
