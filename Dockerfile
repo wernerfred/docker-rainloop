@@ -28,8 +28,13 @@ RUN cd /tmp \
 
 RUN mkdir ${APACHE_DOCUMENT_ROOT} \
     && unzip -q /tmp/rainloop-community-1.14.0.zip -d ${APACHE_DOCUMENT_ROOT} \
-    && find /rainloop -type d -exec chmod 755 {} \; \
-    && find /rainloop -type f -exec chmod 644 {} \; \
-    && chown -R www-data:www-data /rainloop
+    && apt purge -q -y unzip wget gpg \
+    && rm -rf /tmp/*
+
+COPY entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
 
 EXPOSE 80
+
+ENTRYPOINT ["/entrypoint.sh"]
