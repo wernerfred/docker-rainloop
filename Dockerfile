@@ -37,4 +37,6 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 80
 
+VOLUME ["/rainloop/data"]
+
 ENTRYPOINT ["/entrypoint.sh"]
