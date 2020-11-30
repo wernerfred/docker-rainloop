@@ -20,6 +20,8 @@ RUN apt-get update -qq \
 
 WORKDIR /tmp
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 RUN wget -q ${RAINLOOP_PGP_PUBLIC_KEY} \
     && wget -q ${RAINLOOP_URL_ASC} \
     && wget -q ${RAINLOOP_URL} \
