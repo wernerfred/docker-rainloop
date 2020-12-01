@@ -10,35 +10,35 @@ ARG RAINLOOP_GPG_FINGERPRINT="3B79 7ECE 694F 3B7B 70F3  11A4 ED7C 49D9 87DA 4591
 
 ENV APACHE_DOCUMENT_ROOT /rainloop
 
+WORKDIR /tmp
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+COPY entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
 RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-available/*.conf
+
 RUN sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 RUN apt-get update -qq \
     && apt-get install -q -y --no-install-recommends unzip wget gpg gpg-agent \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /tmp
-
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-RUN wget -q ${RAINLOOP_PGP_PUBLIC_KEY} \
+    && rm -rf /var/lib/apt/lists/* \
+    &&  wget -q ${RAINLOOP_PGP_PUBLIC_KEY} \
     && wget -q ${RAINLOOP_URL_ASC} \
     && wget -q ${RAINLOOP_URL} \
     && gpg --import RainLoop.asc \
     && FINGERPRINT="$(LANG=C gpg --verify rainloop-community-${RAINLOOP_VERSION}.zip.asc rainloop-community-${RAINLOOP_VERSION}.zip 2>&1 \
       | sed -n "s#Primary key fingerprint: \(.*\)#\1#p")" \
     && if [ -z "${FINGERPRINT}" ]; then echo "ERROR: Invalid GPG signature!" && exit 1; fi \
-    && if [ "${FINGERPRINT}" != "${RAINLOOP_GPG_FINGERPRINT}" ]; then echo "ERROR: Wrong GPG fingerprint!" && exit 1; fi
-
-RUN mkdir ${APACHE_DOCUMENT_ROOT} \
+    && if [ "${FINGERPRINT}" != "${RAINLOOP_GPG_FINGERPRINT}" ]; then echo "ERROR: Wrong GPG fingerprint!" && exit 1; fi \
+    &&  mkdir ${APACHE_DOCUMENT_ROOT} \
     && unzip -q /tmp/rainloop-community-1.14.0.zip -d ${APACHE_DOCUMENT_ROOT} \
     && apt-get purge -q -y unzip wget gpg gpg-agent \
+    && apt-get autoremove -y \
     && rm -rf /tmp/*
-
-COPY entrypoint.sh /entrypoint.sh
-
-RUN chmod +x /entrypoint.sh
 
 EXPOSE 80
 
