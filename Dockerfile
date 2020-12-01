@@ -14,7 +14,7 @@ RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-av
 RUN sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 RUN apt-get update -qq \
-    && apt-get install -q -y --no-install-recommends unzip wget gpg \
+    && apt-get install -q -y --no-install-recommends unzip wget gpg gpg-agent \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -33,7 +33,7 @@ RUN wget -q ${RAINLOOP_PGP_PUBLIC_KEY} \
 
 RUN mkdir ${APACHE_DOCUMENT_ROOT} \
     && unzip -q /tmp/rainloop-community-1.14.0.zip -d ${APACHE_DOCUMENT_ROOT} \
-    && apt-get purge -q -y unzip wget gpg \
+    && apt-get purge -q -y unzip wget gpg gpg-agent \
     && rm -rf /tmp/*
 
 COPY entrypoint.sh /entrypoint.sh
