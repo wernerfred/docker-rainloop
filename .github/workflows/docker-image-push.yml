@@ -2,7 +2,7 @@ name: Build current version + push to DockerHub
 
 on:
   release:
-    types: [published]
+    types: [created]
 
 jobs:
   docker:
