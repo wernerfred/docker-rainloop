@@ -22,6 +22,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build docker image
-      uses: docker/build-push-action@v2
-      with:
-        push: false
+      run: docker build .
+
