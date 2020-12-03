@@ -22,7 +22,7 @@ docker build -t wernerfred/docker-rainloop .
 
 ### Pull from DockerHub
 
-Another possibility is pulling the image directly from the [DockerHub repository](https://hub.docker.com/r/wernerfred/rainloop). Every release on this project automatically triggers a new build based on the master branch.
+Another possibility is pulling the image directly from the [DockerHub repository](https://hub.docker.com/r/wernerfred/docker-rainloop). Every release on this project automatically triggers a new build based on the master branch.
 
 ```
 docker pull wernerfred/docker-rainloop
