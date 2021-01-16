@@ -35,7 +35,7 @@ RUN apt-get update -qq \
     && if [ -z "${FINGERPRINT}" ]; then echo "ERROR: Invalid GPG signature!" && exit 1; fi \
     && if [ "${FINGERPRINT}" != "${RAINLOOP_GPG_FINGERPRINT}" ]; then echo "ERROR: Wrong GPG fingerprint!" && exit 1; fi \
     &&  mkdir ${APACHE_DOCUMENT_ROOT} \
-    && unzip -q /tmp/rainloop-community-1.14.0.zip -d ${APACHE_DOCUMENT_ROOT} \
+    && unzip -q /tmp/rainloop-community-${RAINLOOP_VERSION}.zip -d ${APACHE_DOCUMENT_ROOT} \
     && apt-get purge -q -y unzip wget gpg gpg-agent \
     && apt-get autoremove -y \
     && rm -rf /tmp/*
