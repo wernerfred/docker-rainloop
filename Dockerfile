@@ -1,6 +1,6 @@
 FROM php:7.4.12-apache
 
-ARG RAINLOOP_VERSION=1.14.0
+ARG RAINLOOP_VERSION=1.15.0
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG RAINLOOP_URL=https://github.com/RainLoop/rainloop-webmail/releases/download/v${RAINLOOP_VERSION}/rainloop-community-${RAINLOOP_VERSION}.zip
