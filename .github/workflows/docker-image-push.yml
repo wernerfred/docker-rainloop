@@ -14,9 +14,11 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v2.2.0
         with:
           images: wernerfred/docker-rainloop
-          tag-semver: |
-            {{version}}
-            {{major}}.{{minor}}
+          tags: |
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{version}}
+          flavor: |
+            latest=auto
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
         with:
