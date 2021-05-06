@@ -23,7 +23,7 @@ RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-av
 RUN sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 RUN apt-get update -qq \
-    && apt-get install -q -y --no-install-recommends unzip=6.0-23+deb10u1 wget=1.20.1-1.1 gpg=2.2.12-1+deb10u1 gpg-agent=2.2.12-1+deb10u1 \
+    && apt-get install -q -y --no-install-recommends unzip=6.0-23+deb10u2 wget=1.20.1-1.1 gpg=2.2.12-1+deb10u1 gpg-agent=2.2.12-1+deb10u1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     &&  wget -q ${RAINLOOP_PGP_PUBLIC_KEY} \
